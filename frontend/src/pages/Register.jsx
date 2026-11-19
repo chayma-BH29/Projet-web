@@ -1,0 +1,64 @@
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+
+export default function Register() {
+  const [nom, setNom] = useState("");
+  const [email, setEmail] = useState("");
+  const [motDePasse, setMotDePasse] = useState("");
+  const [confirmation, setConfirmation] = useState("");
+  const [erreur, setErreur] = useState("");
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (motDePasse.length < 4) {
+      setErreur("Le mot de passe doit contenir au moins 4 caractères");
+      return;
+    }
+    if (motDePasse !== confirmation) {
+      setErreur("Les mots de passe ne sont pas identiques");
+      return;
+    }
+    // Version maquette : on connecte directement le nouvel investisseur.
+    // Avec Laravel, on enverra les données à l'API (POST /api/register).
+    login({ id: Date.now(), nom, role: "investisseur" });
+    navigate("/");
+  };
+
+  return (
+    <div className="container" style={{ maxWidth: 420 }}>
+      <h2 className="mt-5 mb-4 text-center">Inscription</h2>
+      {erreur && <div className="alert alert-danger">{erreur}</div>}
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label className="form-label">Nom</label>
+          <input className="form-control" value={nom}
+            onChange={(e) => setNom(e.target.value)} required />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Email</label>
+          <input type="email" className="form-control" value={email}
+            onChange={(e) => setEmail(e.target.value)} required />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Mot de passe</label>
+          <input type="password" className="form-control" value={motDePasse}
+            onChange={(e) => setMotDePasse(e.target.value)} required />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Confirmer le mot de passe</label>
+          <input type="password" className="form-control" value={confirmation}
+            onChange={(e) => setConfirmation(e.target.value)} required />
+        </div>
+        <button type="submit" className="btn btn-success w-100">
+          Créer mon compte
+        </button>
+      </form>
+      <p className="text-center mt-3">
+        Déjà inscrit ? <Link to="/login">Se connecter</Link>
+      </p>
+    </div>
+  );
+}
