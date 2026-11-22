@@ -3,7 +3,7 @@ import { useData } from "../context/DataContext";
 import { useAuth } from "../context/AuthContext";
 
 export default function Market() {
-  const { actions, solde, positions, acheter, vendre } = useData();
+  const { actions, solde, positions, acheter, vendre, simulerMarche } = useData();
   const { user } = useAuth();
   const [recherche, setRecherche] = useState("");
   const [selection, setSelection] = useState(null);
@@ -39,9 +39,14 @@ export default function Market() {
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h2>Marché</h2>
         {peutTrader && (
-          <span className="badge bg-success fs-6">
-            Solde : {solde.toLocaleString("fr-FR")} MAD
-          </span>
+          <div>
+            <button className="btn btn-outline-primary btn-sm me-3" onClick={simulerMarche}>
+              Simuler le marché
+            </button>
+            <span className="badge bg-success fs-6">
+              Solde : {solde.toLocaleString("fr-FR")} MAD
+            </span>
+          </div>
         )}
       </div>
 

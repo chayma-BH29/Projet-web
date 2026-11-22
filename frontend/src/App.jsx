@@ -1,13 +1,13 @@
-import { Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import ProtectedRoute from "./components/ProtectedRoute";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Market from "./pages/Market";
-import Portfolio from "./pages/Portfolio";
-import Charts from "./pages/Charts";
-import AdminActions from "./pages/AdminActions";
 import { useState } from "react";
+import Login from "./pages/Login";
+import Charts from "./pages/Charts";
+import Market from "./pages/Market";
+import Register from "./pages/Register";
+import Navbar from "./components/Navbar";
+import Portfolio from "./pages/Portfolio";
+import AdminActions from "./pages/AdminActions";
+import { Routes, Route } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function App() {
 
