@@ -12,4 +12,10 @@ class ActionController extends Controller
     {
         return response()->json(Action::orderBy('symbole')->get());
     }
+    public function historique(Action $action): JsonResponse
+    {
+    return response()->json(
+        $action->historiquePrix()->orderBy('date_prix')->orderBy('id')->get(['prix', 'date_prix'])
+    );
+    }
 }
