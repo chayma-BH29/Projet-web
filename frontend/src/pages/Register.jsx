@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { messageErreur } from "../api";
 
 export default function Register() {
   const [nom, setNom] = useState("");
@@ -8,24 +9,27 @@ export default function Register() {
   const [motDePasse, setMotDePasse] = useState("");
   const [confirmation, setConfirmation] = useState("");
   const [erreur, setErreur] = useState("");
-  const { login } = useAuth();
+  const { register} = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (motDePasse.length < 4) {
-      setErreur("Le mot de passe doit contenir au moins 4 caractères");
-      return;
-    }
-    if (motDePasse !== confirmation) {
-      setErreur("Les mots de passe ne sont pas identiques");
-      return;
-    }
-    // Version maquette : on connecte directement le nouvel investisseur.
-    // Avec Laravel, on enverra les données à l'API (POST /api/register).
-    login({ id: Date.now(), nom, role: "investisseur" });
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setErreur("");
+  if (motDePasse.length < 8) {
+    setErreur("Le mot de passe doit contenir au moins 8 caractères");
+    return;
+  }
+  if (motDePasse !== confirmation) {
+    setErreur("Les mots de passe ne sont pas identiques");
+    return;
+  }
+  try {
+    await register(nom, email, motDePasse, confirmation);
     navigate("/");
-  };
+  } catch (err) {
+    setErreur(messageErreur(err));
+  }
+};
 
   return (
     <div className="container" style={{ maxWidth: 420 }}>

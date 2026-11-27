@@ -7,17 +7,17 @@ export default function Navbar() {
 
   if (!user) return null;
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+  const handleLogout = async () => {
+  await logout();
+  navigate("/login");
+};
 
   return (
     <nav className="navbar navbar-expand navbar-dark bg-dark px-3">
       <Link className="navbar-brand" to="/">Portefeuille virtuel</Link>
       <div className="navbar-nav me-auto">
         <Link className="nav-link" to="/">Marché</Link>
-        {user.role === "investisseur" && (
+        {user.role === "user" && (
           <>
             <Link className="nav-link" to="/portefeuille">Portefeuille</Link>
             <Link className="nav-link" to="/graphiques">Graphiques</Link>

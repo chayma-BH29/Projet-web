@@ -11,7 +11,7 @@ export default function Market() {
   const [quantite, setQuantite] = useState(1);
   const [message, setMessage] = useState(null);
 
-  const peutTrader = user.role === "investisseur";
+  const peutTrader = user.role === "user";
 
   const filtrees = actions.filter(
     (a) =>

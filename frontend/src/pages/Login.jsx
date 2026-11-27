@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { users } from "../data/mock";
+import { messageErreur } from "../api";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -10,18 +10,16 @@ export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const trouve = users.find(
-      (u) => u.email === email && u.mot_de_passe === motDePasse
-    );
-    if (!trouve) {
-      setErreur("Email ou mot de passe incorrect");
-      return;
-    }
-    login({ id: trouve.id, nom: trouve.nom, role: trouve.role });
-    navigate(trouve.role === "admin" ? "/admin/actions" : "/");
-  };
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setErreur("");
+  try {
+    const u = await login(email, motDePasse);
+    navigate(u.role === "admin" ? "/admin/actions" : "/");
+  } catch (err) {
+    setErreur(messageErreur(err));
+  }
+};
 
   return (
     <div className="container" style={{ maxWidth: 420 }}>

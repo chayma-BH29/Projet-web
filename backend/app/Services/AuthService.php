@@ -46,8 +46,9 @@ class AuthService
 
     private function reponse(User $user): array
     {
+         $user = User::with('portefeuille')->findOrFail($user->id);
         return [
-            'user' => $user->load('portefeuille'),
+            'user' => $user->refresh()->load('portefeuille'),
             'token' => $user->createToken('auth')->plainTextToken,
         ];
     }
