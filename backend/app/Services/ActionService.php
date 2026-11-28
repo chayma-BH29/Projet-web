@@ -52,4 +52,23 @@ class ActionService
             'date_prix' => now(),
         ]);
     }
+
+    public function simulerMarche(float $amplitude = 0.03): int
+{
+    return DB::transaction(function () use ($amplitude) {
+        $actions = Action::lockForUpdate()->get();
+
+        foreach ($actions as $action) {
+            // variation aléatoire entre -3 % et +3 %
+            $variation = (mt_rand() / mt_getrandmax() * 2 - 1) * $amplitude;
+            $nouveauPrix = max(1, round((float) $action->prix_actuel * (1 + $variation), 2));
+
+            $action->update(['prix_actuel' => $nouveauPrix]);
+            $this->enregistrerPrix($action);
+        }
+
+        return $actions->count();
+    });
+}
+
 }

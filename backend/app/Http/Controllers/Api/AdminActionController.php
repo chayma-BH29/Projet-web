@@ -30,4 +30,14 @@ class AdminActionController extends Controller
 
         return response()->json(['message' => 'Action supprimée.']);
     }
+
+    public function simuler(): JsonResponse
+{
+    $nombre = $this->actions->simulerMarche();
+
+    return response()->json([
+        'message' => "Marché simulé : {$nombre} prix mis à jour.",
+        'actions' => Action::orderBy('symbole')->get(),
+    ]);
+}
 }

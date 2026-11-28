@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\AdminActionController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/login', fn () => response()->json(['message' => 'Non authentifié.'], 401))->name('login');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -24,5 +25,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/actions', [AdminActionController::class, 'store']);
         Route::put('/actions/{action}', [AdminActionController::class, 'update']);
         Route::delete('/actions/{action}', [AdminActionController::class, 'destroy']);
+        Route::post('/simuler-marche', [AdminActionController::class, 'simuler']);
     });
 });
